@@ -1,16 +1,19 @@
 ﻿$(document).ready(() => {
+    console.log("sdas");
     loadData();
 });
 
 function loadData() {
-    if ($("#tenderInfo").length > 0) {
-        LoadTenderData();
-    } else {
+    if ($("#tenderInfoAdmin")) {
         LoadAdminTenderData();
+    } else {
+        LoadTenderData();
     }
 }
 function LoadAdminTenderData() {
+    console.log("loadedd");
 }
 
 function LoadTenderData() {
+    console.log("loadeduserrr");
 }

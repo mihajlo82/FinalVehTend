@@ -489,7 +489,7 @@ namespace BusinessLogic
                 .Select(p => new GenericDropdown()
                 {
                     id = p.Id,
-                    text = p.City +  " " + p.ZipCode,
+                    text = p.City + " " + p.ZipCode,
                 }).OrderBy(x => x.id).ToList();
 
                     return listFormDb;
@@ -649,8 +649,8 @@ namespace BusinessLogic
                         UserId = tender.UserId,
                     };
 
-                  var savedTender =  db.Tender.Add(t);
-                  foreach(var tS in tender.TenderStockId)
+                    var savedTender = db.Tender.Add(t);
+                    foreach (var tS in tender.TenderStockId)
                     {
                         TenderStock tenderStock = new TenderStock
                         {
@@ -660,7 +660,7 @@ namespace BusinessLogic
                         db.TenderStock.Add(tenderStock);
                     };
 
-                    foreach(var tU in tender.TenderUserId)
+                    foreach (var tU in tender.TenderUserId)
                     {
                         TenderUser tenderUser = new TenderUser
                         {
@@ -747,7 +747,7 @@ namespace BusinessLogic
                         var a = new HomeTableDTO
                         {
                             TenderNo = tender.TenderNo,
-                            Dealer = tender.User.DealerName,
+                            Dealer = tender.User.DealerName,  //.DealerName
                             DealerName = tender.User.FirstName + " " + tender.User.LastName,
                             OpenDate = tender.OpenDate.ToString().Substring(0, 10),
                             CloseDate = tender.CloseDate.ToString().Substring(0, 10)
@@ -763,5 +763,42 @@ namespace BusinessLogic
                 throw;
             }
         }
+
+
+
+        public List<StockInfoDetailsDTO> DetailStockInfos()
+        {
+            try
+            {
+                using (db = new ApplicationDbContext())
+                {
+                    List<StockInfoDetailsDTO> stocksList = new List<StockInfoDetailsDTO>();
+                    var stocks = db.StockInfo.ToList();
+                    foreach (var stock in stocks)
+                    {
+                        var a = new StockInfoDetailsDTO
+                        {
+                            RegNo = stock.RegNo,
+                            Make = stock.Car.Manufacturer.ManufacturerName,
+                            Carline = stock.Car.ModelName,
+                            Model = stock.Car.ModelNo,
+                            Mileage = stock.Mileage.ToString(),
+                            Cost = stock.Price.ToString(),
+                            Comments = stock.Comments,
+                            Location = stock.Location.City
+                        };
+                        stocksList.Add(a);
+                    }
+                    return stocksList;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
+
     }
 }

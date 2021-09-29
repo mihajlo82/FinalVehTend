@@ -1,9 +1,14 @@
 ﻿using BusinessLogic;
+using BusinessLogic.DataTransferObjects;
+using DataAccessLayer_DAL;
+using DataAccessLayer_DAL.BusinessObjects;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using VehicleTender.Models;
 
 namespace VehicleTender.Controllers
 {
@@ -11,6 +16,7 @@ namespace VehicleTender.Controllers
     public class HomeController : Controller
     {
         private MainBLL mainBLL = new MainBLL();
+
         public ActionResult Index()
         {
             return View();
@@ -28,10 +34,40 @@ namespace VehicleTender.Controllers
                 throw;
             }
         }
-        public ActionResult Tender()
+
+     
+        public ActionResult Tender(string id)
         {
-            ViewBag.Id = Url.RequestContext.RouteData.Values["Id"];
-            return View();
+            //    var k  = Url.RequestContext.RouteData.Values["id"];
+            ApplicationDbContext db = new ApplicationDbContext();
+            ViewModelHomeDetail det = new ViewModelHomeDetail();
+
+            //tender info
+            var singleTenderDetails = db.Tender.FirstOrDefault(x => x.TenderNo == id);
+            det.Tender = singleTenderDetails;
+
+            //list stocks of specific tender
+            List<TenderStock> stocks = db.TenderStock.Where(x => x.TenderId == singleTenderDetails.Id).ToList();
+            det.TStock = stocks;
+
+            List<TenderUser> usersInvited = db.TenderUser.Where(x => x.TenderId == singleTenderDetails.Id).ToList();
+            det.TUser = usersInvited;
+           // var TUser = db.TenderUser.Where(x=> x.TenderId == singleTenderDetails.Id);
+
+            return View(det);
+        }
+
+
+        public JsonResult GetStockInfoDetails() {
+            try
+            {
+                var stockinfo = mainBLL.DetailStockInfos();
+                return Json(stockinfo, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
-}
+}//

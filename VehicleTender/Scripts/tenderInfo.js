@@ -3,13 +3,14 @@
 });
 
 function loadData() {
+    console.log("founddd tender info")
     let userPromis = $.Deferred();
     let usersDataSource = new DevExpress.data.DataSource({
         key: "Id",
         load: () => {
             $.ajax({
                 type: "GET",
-                url: "/home/GetTenders",
+                url: "/Home/GetStockInfoDetails",
                 contentType: "application/json",
                 success: (data) => {
                     console.log(data);
@@ -22,20 +23,18 @@ function loadData() {
             return userPromis.promise();
         }
     })
-    $("#homeTable").dxDataGrid({
+    $("#tenderInfoAdmin").dxDataGrid({
         dataSource: usersDataSource,
         showBorders: true,
         columnAutoWidth: true,
         columns: [
             {
-                dataField: "TenderNo",
-                cellTemplate: function (container, options) {
-                    $("<a href='/Home/Tender/" + options.value + "'>" + options.value + "</a>").appendTo(container);
-                }
+                dataField: "RegNo",
+                //cellTemplate: function (container, options) {
+                //    $("<a href='/Home/Tender/" + options.value + "'>" + options.value + "</a>").appendTo(container);
+                //}
             },
-            {
-                dataField:"Dealer",
-                }, "DealerName", "OpenDate", "CloseDate"],
+            "Make", "Carline", "Model", "Mileage", "Cost", "Comment", "Location"],
     }).dxDataGrid("instance");
 }
 function LoadAdminTenderData() {

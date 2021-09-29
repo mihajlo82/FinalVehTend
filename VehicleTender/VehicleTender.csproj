@@ -191,6 +191,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ViewModelHomeDetail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Startup.cs" />
@@ -367,6 +368,7 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\stocks.js" />
     <Content Include="Scripts\tenderData.js" />
+    <Content Include="Scripts\tenderInfo.js" />
     <Content Include="Scripts\tenders.js" />
     <Content Include="Scripts\tenderStatus.js" />
     <Content Include="Scripts\user.js" />
