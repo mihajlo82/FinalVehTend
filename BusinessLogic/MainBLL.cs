@@ -741,7 +741,7 @@ namespace BusinessLogic
                 using (db = new ApplicationDbContext())
                 {
                     List<HomeTableDTO> tenderList = new List<HomeTableDTO>();
-                    var tenders = db.Tender.Include(x => x.User).ToList();
+                    var tenders = db.Tender.Include(x => x.User).Where(x=> x.Status.Type == "open").ToList();
                     foreach (var tender in tenders)
                     {
                         var a = new HomeTableDTO
