@@ -51,18 +51,9 @@ namespace VehicleTender.Controllers
             List<TenderStock> stocks = db.TenderStock.Where(x => x.TenderId == singleTenderDetails.Id).ToList();
             det.TStock = stocks;
 
-            //List<Bid> usersInvited = db.Bid.Where(x => x.TenderStockId == singleTenderDetails.Id).Where(x=>x.User.Id==x.TenderUserId).ToList();
-            //det.InvitedUser = usersInvited;
-            //List<TenderUser> usersInvited = db.TenderUser.Where(x => x.TenderId == singleTenderDetails.Id).ToList();
-            //det.TUser = usersInvited;
-
-            // var TUser = db.TenderUser.Where(x=> x.TenderId == singleTenderDetails.Id);
-    //        List<Bid> allBid = db.Bid.Where(x=> x.Stock.Tender.TenderNo == singleTenderDetails.TenderNo).Where(x=>x.TenderUserId == x.User.Id).ToList();
-          //  det.Bid  = allBid;
-
+            //users in spexific tedner
             List<Bid> finUse = db.Bid.Where(x => x.Stock.Tender.Id == singleTenderDetails.Id).ToList();
-            det.Bid = finUse;
-            
+            det.Bid = finUse;          
 
             return View(det);
         }
@@ -87,9 +78,12 @@ namespace VehicleTender.Controllers
             return View();
         }
 
-        //admin view tender details
+        //USER view tender details
         public ActionResult TenderUser(string id)
         {
+            /////////////////////////////////////////////////////
+            ////////////////////USER
+            /////////////////////////////////////////////////////
             //    var k  = Url.RequestContext.RouteData.Values["id"];
             ApplicationDbContext db = new ApplicationDbContext();
             ViewModelHomeDetail det = new ViewModelHomeDetail();
@@ -117,17 +111,17 @@ namespace VehicleTender.Controllers
         public void MyDataJson(BidFinishDTO[] dataForSending)
         {
             try {
-                ApplicationDbContext db = new ApplicationDbContext();
-                var bids = db.Bid.ToList();
+                mainBLL.MyDat(dataForSending);
+                //ApplicationDbContext db = new ApplicationDbContext();
+                //var bids = db.Bid.ToList();
 
-                foreach (var item in dataForSending) {
-                    var edi =bids.Find(x => x.Id == item.Id);
-                    edi.IsWinningPrice = true;
-                    var spcfT = item.Id;
-                    edi.Stock.Tender.StatusId=4;
-                 //   k.Where(x => item.Id == edi.Stock.Tender.Id);
-                    db.SaveChanges();
-                }
+                //foreach (var item in dataForSending) {
+                //    var edi =bids.Find(x => x.Id == item.Id);
+                //    edi.IsWinningPrice = true;
+                //    var spcfT = item.Id;
+                //    edi.Stock.Tender.StatusId=4;
+                //    db.SaveChanges();
+                //}
             }
             catch (Exception)
             {
