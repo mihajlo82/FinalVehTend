@@ -123,6 +123,9 @@ namespace VehicleTender.Controllers
                 foreach (var item in dataForSending) {
                     var edi =bids.Find(x => x.Id == item.Id);
                     edi.IsWinningPrice = true;
+                    var spcfT = item.Id;
+                    edi.Stock.Tender.StatusId=4;
+                 //   k.Where(x => item.Id == edi.Stock.Tender.Id);
                     db.SaveChanges();
                 }
             }
