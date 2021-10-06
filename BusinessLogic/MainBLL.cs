@@ -7,6 +7,7 @@ using System.Text;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using BusinessLogic.DataTransferObjects;
+using System.Data.SqlClient;
 
 namespace BusinessLogic
 {
@@ -741,7 +742,7 @@ namespace BusinessLogic
                 using (db = new ApplicationDbContext())
                 {
                     List<HomeTableDTO> tenderList = new List<HomeTableDTO>();
-                    var tenders = db.Tender.Include(x => x.User).Where(x=> x.Status.Type == "open").ToList();
+                    var tenders = db.Tender.Include(x => x.User).ToList();//.Where(x=> x.Status.Type == "open")
                     foreach (var tender in tenders)
                     {
                         var a = new HomeTableDTO
@@ -763,8 +764,6 @@ namespace BusinessLogic
                 throw;
             }
         }
-
-
 
         public List<StockInfoDetailsDTO> DetailStockInfos()
         {
@@ -799,6 +798,62 @@ namespace BusinessLogic
         }
 
 
+        public void MyDat(List<BidFinishDTO> dataForSending)
+        {
+            try
+            {
+                using (db = new ApplicationDbContext())
+                {
+                    //string conn = @"Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\aspnet-WebApplication1-20210926055957.mdf;Initial Catalog=aspnet-WebApplication1-20210926055957;Integrated Security=True";
 
+                    //SqlConnection con = new SqlConnection(conn);
+                    // con.Open();
+                    //  List<BidFinishDTO> myD = new List<BidFinishDTO>();
+                    //  var datas = dataForSending;
+                    var bids = db.Bid.ToList();
+                  // List<Bid> teemp = new List<Bid>();
+
+                    foreach (var item in dataForSending) {
+                        bids.Add((Bid)bids.Where(x => x.Id == item.Id).Select(c => c.IsWinningPrice = true));
+                    };
+                        db.SaveChanges();
+                    //  var c = bids.Where(x => x.Id == item.Id).Select(k => k.IsWinningPrice == true);
+                    //  db.SaveChanges();
+
+                    //teemp.Add(t);
+
+                    foreach (var item in dataForSending)
+                    {
+                        var edItem = new Bid
+                        {
+                            Id = item.Id,
+                            TenderStockId = item.TenderStockId,
+                            TenderUserId = item.TenderUserId,
+                            Price = item.Price + 22,
+                            IsWinningPrice = item.IsWinningPrice
+                        };
+                        bids.Add(edItem);
+                        db.SaveChanges();
+                    }
+                        //try
+                        //{
+                        //  string st = "UPDATE Bid SET IsWinningPrice="+ true +" WHERE Id=" +item.Id;
+                        //  SqlCommand sqlcom = new SqlCommand(st);
+                        //  sqlcom.ExecuteNonQuery();
+                        //}
+                        //catch (SqlException ex)
+                        //{
+                        //    throw ex;
+                        //}
+
+                        // ;
+                        //  db.SaveChanges();
+                    }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

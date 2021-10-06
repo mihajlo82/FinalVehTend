@@ -2,79 +2,96 @@
 
 @{
     ViewBag.Title = "Tender";
-
 }
-
 @if (this.User.IsInRole("admin"))
 {
-    @*<h1>Admin</h1>*@
-    <div class="container">
-        <div class="row row-cols-2">
-            <div class="col"><b>Tender number: </b> @Model.Tender.TenderNo   </div>
-            <div class="col"><b>Tender open date:</b> @Model.Tender.OpenDate.ToShortDateString() </div>
-            <div class="col"><b>Seller:</b> @Model.Tender.User.DealerName </div>
-            <div class="col"><b>Tender close date:</b> @Model.Tender.CloseDate.ToShortDateString() </div>
-            <div class="col"><b>Tender contact:</b> @Model.Tender.User.Email</div>
+    @*<h1>Admin</h1*@ 
+ <div class="container">
+            <div class="row row-cols-2">
+                <div class="col"><b>Tender number: </b> @Model.Tender.TenderNo   </div>
+                <div class="col"><b>Tender open date:</b> @Model.Tender.OpenDate.ToShortDateString() </div>
+                <div class="col"><b>Seller:</b> @Model.Tender.User.DealerName </div>
+                <div class="col"><b>Tender close date:</b> @Model.Tender.CloseDate.ToShortDateString() </div>
+                <div class="col"><b>Tender contact:</b> @Model.Tender.User.Email</div>
+                <div style="display:none;" class="col tendid"><b>Tender ID:</b> <input type="hidden" value=@Model.Tender.Id /></div>
+            </div>
         </div>
-    </div>
 
-    <br>
-    <br>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">RegNo</th>
-                <th scope="col">Make</th>
-                <th scope="col">Carline</th>
-                <th scope="col">Model</th>
-                <th scope="col">Mileage</th>
-                <th scope="col">Cost</th>
-                <th scope="col">Comments</th>
-                <th scope="col">Location</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.TStock)
-            {
-                <tr style="border-top: 3px solid black; border-bottom: 2px solid black;">
-                    <td>@item.Stock.RegNo</td>
-                    <td>@item.Stock.Car.Manufacturer.ManufacturerName</td>
-                    <td>@item.Stock.Car.ModelName</td>
-                    <td>@item.Stock.Car.ModelNo</td>
-                    <td>@item.Stock.Mileage</td>
-                    <td>@item.Stock.Price</td>
-                    <td>@item.Stock.Comments</td>
-                    <td>@item.Stock.Location.City</td>
-                </tr>  
-
-                foreach (var user in Model.TUser)
-                {
+        <table class="table table-striped allTable">
+            <thead>
                 <tr>
-                    <td></td>
-                    <td><b>@user.User.FirstName</b></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-
-                    <td></td>
-                    <td><b>@user.User.DealerName</b> <input type="checkbox" name="checkbid" /> </td>
-                    <td></td>
+                    <th scope="col">RegNo</th>
+                    <th scope="col">Make</th>
+                    <th scope="col">Carline</th>
+                    <th scope="col">Model</th>
+                    <th scope="col">Mileage</th>
+                    <th scope="col">Cost</th>
+                    <th scope="col">Comments</th>
+                    <th scope="col">Location</th>
                 </tr>
-                    }
-                }
-        </tbody>
-    </table>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model.TStock)
+                {
+                    var m = Model.Bid.Where(x => x.Stock.Id == item.Id);
+                    //style = "color:blue;text-decoration:underline;" class="regNoLink"
+                        <tr style="border-top: 3px solid black; border-bottom: 2px solid black;">
+                            <td style="color:blue;text-decoration:underline;" class="regNoLink"><span>@item.Stock.RegNo</span>
+                            @if (m.Count() > 0) { <span>&#8617;</span>}
+                            </td>
+                            <td>@item.Stock.Car.Manufacturer.ManufacturerName</td>
+                            <td>@item.Stock.Car.ModelName</td>
+                            <td>@item.Stock.Car.ModelNo</td>
+                            <td>@item.Stock.Mileage</td>
+                            <td>@item.Stock.Price</td>
+                            <td>@item.Stock.Comments</td>
+                            <td>@item.Stock.Location.City</td>
+                            <input type="hidden" value=@item.Stock.Id class="hidden-stock-id" />
+                        </tr>
 
 
-   // <div id="tenderInfoAdmin"></div>
 
-}
-else
-{
-    <h1>user asdfas</h1>
-    <div id="tenderInfo"></div>
-}
+                     <tbody style="display:none;" class="userBidDet">
+                        @if (m.Count() > 0)
+                          {
+                              foreach (var bid in m)//.Find(x=>x.Stock.Id == item.Id)
+                              {
+                              <tr class="userHolder">
+                                  <td><input type="hidden" value="@bid.TenderUserId"> <input type="hidden" value="@bid.Id" /> <input type="hidden" value="@bid.TenderStockId" /> </td>
+                                  <td><b>@bid.User.User.FirstName</b> </td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
 
-@*@section Scripts{
+                                  <td></td>
+                                  <td><b>@bid.Price</b> <input type="checkbox" name=@item.Stock.RegNo class="@item.Stock.RegNo" /> </td>
+                                  <td></td>
+                              </tr>
+                              }
+                          }
+                          else
+                          {
+                                  <tr>
+                                    <td colspan="3" ><b> No bids on this stock yet!</b></td>
+                                  </tr>
+                          }
+                      </tbody>
+
+                 }
+            </tbody>
+         </table>
+
+        }else{
+        <h1>user asdfas</h1>
+        <div id="tenderInfo"></div>
+        }
+
+
+<div style="display:none;" class="finishBtn">
+    <button type="submit" id="finbtn" class="btn btn-primary offset-10 p-2">Finish</button>
+</div>
+
+@section Scripts{
     <script src="~/Scripts/tenderInfo.js"></script>
-}*@
+}

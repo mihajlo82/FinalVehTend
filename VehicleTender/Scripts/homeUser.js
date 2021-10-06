@@ -12,6 +12,7 @@ function loadData() {
                 url: "/home/GetTenders",
                 contentType: "application/json",
                 success: (data) => {
+                    console.log(data);
                     userPromis.resolve(data);
                 },
                 error: (data) => {
@@ -29,11 +30,11 @@ function loadData() {
             {
                 dataField: "TenderNo",
                 cellTemplate: function (container, options) {
-                    $("<a href='/Home/Tender/" + options.value + "'>" + options.value + "</a>").appendTo(container);
+                    $("<a href='/Home/TenderUser/" + options.value + "'>" + options.value + "</a>").appendTo(container);
                 }
             },
             {
-                dataField:"Dealer",
-                }, "DealerName", "OpenDate", "CloseDate"],
+                dataField: "Dealer",
+            }, "DealerName", "OpenDate", "CloseDate"],
     }).dxDataGrid("instance");
 }

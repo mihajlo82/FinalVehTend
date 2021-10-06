@@ -354,6 +354,8 @@
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\carModels.js" />
     <Content Include="Scripts\home.js" />
+    <Content Include="Scripts\homeUser.js" />
+    <Content Include="Scripts\homeUserReviewTable.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
@@ -366,6 +368,7 @@
     <Content Include="Scripts\location.js" />
     <Content Include="Scripts\manufacturer.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\myData.js" />
     <Content Include="Scripts\stocks.js" />
     <Content Include="Scripts\tenderData.js" />
     <Content Include="Scripts\tenderInfo.js" />
@@ -412,6 +415,10 @@
     <Content Include="Views\TenderStatus\Index.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Home\Tender.cshtml" />
+    <Content Include="Views\Home\IndexUser.cshtml" />
+    <Content Include="Views\Home\TenderUser.cshtml" />
+    <Content Include="Views\Home\GetTestData.cshtml" />
+    <Content Include="Views\Home\MyData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

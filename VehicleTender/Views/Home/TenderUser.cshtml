@@ -1,0 +1,115 @@
+﻿@model VehicleTender.Models.ViewModelHomeDetail
+@{
+    ViewBag.Title = "TenderUser";
+}
+<body>
+<h1>User Page</h1>
+
+<div class="container">
+    <div class="row row-cols-2">
+        <div class="col"><b>Tender number: </b> @Model.Tender.TenderNo   </div>
+        <div class="col"><b>Tender open date:</b> @Model.Tender.OpenDate.ToShortDateString() </div>
+        <div class="col"><b>Seller:</b> @Model.Tender.User.DealerName </div>
+        <div class="col"><b>Tender close date:</b> @Model.Tender.CloseDate.ToShortDateString() </div>
+        <div class="col"><b>Tender contact:</b> @Model.Tender.User.Email</div>
+    </div>
+</div>
+
+<br>
+<br>
+<p class="error-msg" style="display:none;color:white;background-color:red; padding:4px;font-weight:bold;"></p>
+<div class="tablesHolder">
+
+<div class="beforeReview">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">RegNo</th>
+                <th scope="col">Make</th>
+                <th scope="col">Carline</th>
+                <th scope="col">Model</th>
+                <th scope="col">Mileage</th>
+                <th scope="col">Cost</th>
+                <th scope="col">Comments</th>
+                <th scope="col">Location</th>
+                <th scope="col">Bid Price</th>
+                @*<th scope="col">Bidder Comments</th>*@
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.TStock)
+            {
+                <tr style="border-top: 3px solid black; border-bottom: 2px solid black;">
+                    <td>@item.Stock.RegNo</td>
+                    <td>@item.Stock.Car.Manufacturer.ManufacturerName</td>
+                    <td>@item.Stock.Car.ModelName</td>
+                    <td>@item.Stock.Car.ModelNo</td>
+                    <td>@item.Stock.Mileage</td>
+                    <td>@item.Stock.Price</td>
+                    <td>@item.Stock.Comments</td>
+                    <td>@item.Stock.Location.City</td>
+                    <td> <input min="0" style="width:60%;" type="number" class="bidVal" /> </td>
+                    @*<td> <input style="width:60%;" type="text" /> </td>*@
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="container">
+        <button class="review offset-10 btn btn-primary p-2">Review</button>
+    </div>
+</div>
+
+@*AFTER TABLE DIVIDER*@
+<br>
+<div style="display:none;" class="afterReview">
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">RegNo</th>
+            <th scope="col">Make</th>
+            <th scope="col">Carline</th>
+            <th scope="col">Model</th>
+            <th scope="col">Mileage</th>
+            <th scope="col">Cost</th>
+            <th scope="col">Comments</th>
+            <th scope="col">Location</th>
+            <th scope="col">Bid Price</th>
+            @*<th scope="col">Bidder Comments</th>*@
+        </tr>
+    </thead>
+    <tbody>
+           
+        @foreach (var item in Model.TStock)
+        {
+            
+            <tr class="inputsTransfer" style="border-top: 3px solid black; border-bottom: 2px solid black;">
+                <td>@item.Stock.RegNo</td>
+                <td>@item.Stock.Car.Manufacturer.ManufacturerName</td>
+                <td>@item.Stock.Car.ModelName</td>
+                <td>@item.Stock.Car.ModelNo</td>
+                <td>@item.Stock.Mileage</td>
+                <td>@item.Stock.Price</td>
+                <td>@item.Stock.Comments</td>
+                <td>@item.Stock.Location.City</td>
+                <td class="finalBid"> $  </td>
+                @*<td class="finalComment"> com </td>*@
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="d-inline">
+    <button class="backBtn offset-10 btn btn-info">Back</button>
+    <button class="submitBidBtn btn btn-success">Submit</button>
+</div>
+</div>
+</div>
+    </body>
+
+
+@section Scripts{
+    <script src="~/Scripts/homeUserReviewTable.js"></script>
+}
+
+
