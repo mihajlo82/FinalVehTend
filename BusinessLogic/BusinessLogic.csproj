@@ -83,6 +83,7 @@
     <Compile Include="DataTransferObjects\StockInfoDetailsDTO.cs" />
     <Compile Include="DataTransferObjects\TenderDTO.cs" />
     <Compile Include="DataTransferObjects\TenderViewModel.cs" />
+    <Compile Include="DataTransferObjects\ViewModelHomeDetCop.cs" />
     <Compile Include="MainBLL.cs" />
     <Compile Include="MobileLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

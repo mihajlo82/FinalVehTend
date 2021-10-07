@@ -39,23 +39,13 @@ namespace VehicleTender.Controllers
      //admin view tender details
         public ActionResult Tender(string id)
         {
-            //    var k  = Url.RequestContext.RouteData.Values["id"];
-            ApplicationDbContext db = new ApplicationDbContext();
-            ViewModelHomeDetail det = new ViewModelHomeDetail();
-
-            //tender info
-            var singleTenderDetails = db.Tender.FirstOrDefault(x => x.TenderNo == id);
-            det.Tender = singleTenderDetails;
-
-            //list stocks of specific tender
-            List<TenderStock> stocks = db.TenderStock.Where(x => x.TenderId == singleTenderDetails.Id).ToList();
-            det.TStock = stocks;
-
-            //users in spexific tedner
-            List<Bid> finUse = db.Bid.Where(x => x.Stock.Tender.Id == singleTenderDetails.Id).ToList();
-            det.Bid = finUse;          
-
-            return View(det);
+            var det = mainBLL.TenderDetails(id);
+            ViewModelHomeDetail detOrig = new ViewModelHomeDetail();
+            detOrig.Tender = det.Tender;
+            detOrig.TStock = det.TStock;
+            detOrig.Bid = det.Bid; 
+            
+            return View(detOrig);
         }
 
 

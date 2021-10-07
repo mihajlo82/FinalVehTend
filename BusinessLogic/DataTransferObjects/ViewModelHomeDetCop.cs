@@ -1,14 +1,13 @@
 ﻿using DataAccessLayer_DAL;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
- namespace VehicleTender.Models
+namespace BusinessLogic.DataTransferObjects
 {
-
-    public class ViewModelHomeDetail
+  public class ViewModelHomeDetCop
     {
         public Tender Tender { get; set; }
         public List<Bid> Bid { get; set; }

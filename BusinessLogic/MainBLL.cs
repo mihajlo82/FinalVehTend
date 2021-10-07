@@ -1,6 +1,7 @@
 ﻿using DataAccessLayer_DAL;
 using DataAccessLayer_DAL.BusinessObjects;
 using System;
+using VehicleTender.v2.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,7 @@ namespace BusinessLogic
     {
         private ApplicationDbContext db;
         // User Methods
+        // public ViewModelHomeDetail vmd;
 
         public List<AspNetUsersMeta> GetUsersList()
         {
@@ -745,7 +747,7 @@ namespace BusinessLogic
                         var a = new HomeTableDTO
                         {
                             TenderNo = tender.TenderNo,
-                            Dealer = tender.User.DealerName,  //.DealerName
+                            Dealer = tender.User.DealerName,  
                             DealerName = tender.User.FirstName + " " + tender.User.LastName,
                             OpenDate = tender.OpenDate.ToString().Substring(0, 10),
                             CloseDate = tender.CloseDate.ToString().Substring(0, 10)
@@ -797,7 +799,7 @@ namespace BusinessLogic
 
         public void MyDat(BidFinishDTO[] dataForSending)
         {
-           try
+            try
             {
                 using (db = new ApplicationDbContext())
                 {
@@ -818,6 +820,46 @@ namespace BusinessLogic
             catch (Exception)
             {
                 throw;
+            }
+        }
+
+
+        public ViewModelHomeDetCop TenderDetails(string id)
+        {
+            try
+            {
+                using (db = new ApplicationDbContext())
+                {
+                    ViewModelHomeDetCop det = new ViewModelHomeDetCop();
+
+                    //tender info
+                    var singleTenderDetails = db.Tender.Include(x => x.User).FirstOrDefault(x => x.TenderNo == id);
+                    det.Tender = singleTenderDetails;
+
+                    //list stocks of specific tender
+                    List<TenderStock> stocks = db.TenderStock.Include(x=>x.Tender)
+                     .Include(x => x.Stock).Include(x=>x.Stock.Car)
+                     .Include(x=>x.Stock.Car.Manufacturer)
+                     .Include(x=>x.Stock.Location)
+                     .Where(x => x.TenderId == singleTenderDetails.Id).ToList();
+                    det.TStock = stocks;
+
+                    //users in specific tender
+                    List<Bid> finUse = db.Bid.Include(x=>x.Stock)
+                       .Include(x=>x.User).
+                        Include(x=>x.User.User)
+                       .Where(x => x.Stock.Tender.Id == singleTenderDetails.Id).ToList();
+
+                    det.Bid = finUse;
+
+                    return det;
+                }
+
+            }
+            catch
+            {
+                throw;
+
             }
         }
     }
